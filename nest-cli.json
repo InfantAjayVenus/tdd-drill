@@ -1,8 +1,32 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
+  "sourceRoot": "apps/tdd-drill/src",
   "compilerOptions": {
-    "deleteOutDir": true
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/tdd-drill/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/tdd-drill",
+  "projects": {
+    "bowling-scoreboard": {
+      "type": "application",
+      "root": "apps/bowling-scoreboard",
+      "entryFile": "main",
+      "sourceRoot": "apps/bowling-scoreboard/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/bowling-scoreboard/tsconfig.app.json"
+      }
+    },
+    "tdd-drill": {
+      "type": "application",
+      "root": "apps/tdd-drill",
+      "entryFile": "main",
+      "sourceRoot": "apps/tdd-drill/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/tdd-drill/tsconfig.app.json"
+      }
+    }
   }
 }
