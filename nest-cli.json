@@ -27,6 +27,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/tdd-drill/tsconfig.app.json"
       }
+    },
+    "todoist": {
+      "type": "application",
+      "root": "apps/todoist",
+      "entryFile": "main",
+      "sourceRoot": "apps/todoist/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/todoist/tsconfig.app.json"
+      }
     }
   }
 }
