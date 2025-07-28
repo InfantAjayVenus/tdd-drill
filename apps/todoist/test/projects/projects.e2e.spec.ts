@@ -28,4 +28,27 @@ describe('Projects (e2e)', () => {
         .expect([]);
     });
   });
+
+  describe('POST /projects', () => {
+    it('should create a new project and return it', () => {
+      const newProject = {
+        name: 'My First Project',
+        description: 'A test project'
+      };
+
+      return request(app.getHttpServer())
+        .post('/projects')
+        .send(newProject)
+        .expect(201)
+        .expect((res) => {
+          expect(res.body).toMatchObject({
+            id: expect.any(String),
+            name: 'My First Project',
+            description: 'A test project',
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String)
+          });
+        });
+    });
+  });
 });
