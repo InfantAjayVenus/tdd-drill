@@ -27,6 +27,32 @@ describe('Projects (e2e)', () => {
         .expect(200)
         .expect([]);
     });
+
+    it('should return created projects', async () => {
+      const newProject = {
+        name: 'My Test Project',
+        description: 'A project for testing'
+      };
+
+      // Create a project first
+      const createResponse = await request(app.getHttpServer())
+        .post('/projects')
+        .send(newProject)
+        .expect(201);
+
+      // Then verify it appears in the list
+      return request(app.getHttpServer())
+        .get('/projects')
+        .expect(200)
+        .expect((res) => {
+          expect(res.body).toHaveLength(1);
+          expect(res.body[0]).toMatchObject({
+            id: createResponse.body.id,
+            name: 'My Test Project',
+            description: 'A project for testing'
+          });
+        });
+    });
   });
 
   describe('POST /projects', () => {

@@ -1,22 +1,19 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { Project } from './entities/project.entity';
+import { ProjectsService } from './projects.service';
 
 @Controller('projects')
 export class ProjectsController {
+  constructor(private readonly projectsService: ProjectsService) {}
+
   @Get()
   findAll(): Project[] {
-    return [];
+    return this.projectsService.findAll();
   }
 
   @Post()
   create(@Body() createProjectDto: CreateProjectDto): Project {
-    return {
-      id: crypto.randomUUID(),
-      name: createProjectDto.name,
-      description: createProjectDto.description,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
+    return this.projectsService.create(createProjectDto);
   }
 }
