@@ -77,4 +77,37 @@ describe('Projects (e2e)', () => {
         });
     });
   });
+
+  describe('GET /projects/:id', () => {
+    it('should return a specific project by id', async () => {
+      const newProject = {
+        name: 'Specific Project',
+        description: 'A project to find'
+      };
+
+      // Create a project first
+      const createResponse = await request(app.getHttpServer())
+        .post('/projects')
+        .send(newProject)
+        .expect(201);
+
+      // Then get it by ID
+      return request(app.getHttpServer())
+        .get(`/projects/${createResponse.body.id}`)
+        .expect(200)
+        .expect((res) => {
+          expect(res.body).toMatchObject({
+            id: createResponse.body.id,
+            name: 'Specific Project',
+            description: 'A project to find'
+          });
+        });
+    });
+
+    it('should return 404 for non-existent project', () => {
+      return request(app.getHttpServer())
+        .get('/projects/non-existent-id')
+        .expect(404);
+    });
+  });
 });

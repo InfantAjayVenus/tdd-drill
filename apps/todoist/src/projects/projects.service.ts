@@ -11,6 +11,10 @@ export class ProjectsService {
     return this.projectsRepository.findAll();
   }
 
+  findOne(id: string): Project | undefined {
+    return this.projectsRepository.findById(id);
+  }
+
   create(createProjectDto: CreateProjectDto): Project {
     return this.projectsRepository.save(createProjectDto);
   }

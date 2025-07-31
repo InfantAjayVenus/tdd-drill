@@ -10,6 +10,10 @@ export class ProjectsRepository {
     return [...this.projects];
   }
 
+  findById(id: string): Project | undefined {
+    return this.projects.find(project => project.id === id);
+  }
+
   save(createProjectDto: CreateProjectDto): Project {
     const project: Project = {
       id: crypto.randomUUID(),

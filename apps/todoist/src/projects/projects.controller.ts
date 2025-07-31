@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, NotFoundException } from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { Project } from './entities/project.entity';
 import { ProjectsService } from './projects.service';
@@ -10,6 +10,15 @@ export class ProjectsController {
   @Get()
   findAll(): Project[] {
     return this.projectsService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string): Project {
+    const project = this.projectsService.findOne(id);
+    if (!project) {
+      throw new NotFoundException(`Project with id ${id} not found`);
+    }
+    return project;
   }
 
   @Post()
