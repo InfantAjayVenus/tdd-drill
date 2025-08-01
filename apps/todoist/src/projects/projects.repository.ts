@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Project } from './entities/project.entity';
 import { CreateProjectDto } from './dto/create-project.dto';
+import { UpdateProjectDto } from './dto/update-project.dto';
 
 @Injectable()
 export class ProjectsRepository {
@@ -25,5 +26,23 @@ export class ProjectsRepository {
     
     this.projects.push(project);
     return project;
+  }
+
+  update(id: string, updateProjectDto: UpdateProjectDto): Project | undefined {
+    const projectIndex = this.projects.findIndex(project => project.id === id);
+    if (projectIndex === -1) {
+      return undefined;
+    }
+
+    const existingProject = this.projects[projectIndex];
+    const updatedProject: Project = {
+      ...existingProject,
+      name: updateProjectDto.name,
+      description: updateProjectDto.description,
+      updatedAt: new Date()
+    };
+
+    this.projects[projectIndex] = updatedProject;
+    return updatedProject;
   }
 }

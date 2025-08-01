@@ -110,4 +110,52 @@ describe('Projects (e2e)', () => {
         .expect(404);
     });
   });
+
+  describe('PUT /projects/:id', () => {
+    it('should update an existing project', async () => {
+      const newProject = {
+        name: 'Original Project',
+        description: 'Original description'
+      };
+
+      // Create a project first
+      const createResponse = await request(app.getHttpServer())
+        .post('/projects')
+        .send(newProject)
+        .expect(201);
+
+      const updateData = {
+        name: 'Updated Project',
+        description: 'Updated description'
+      };
+
+      // Update the project
+      return request(app.getHttpServer())
+        .put(`/projects/${createResponse.body.id}`)
+        .send(updateData)
+        .expect(200)
+        .expect((res) => {
+          expect(res.body).toMatchObject({
+            id: createResponse.body.id,
+            name: 'Updated Project',
+            description: 'Updated description',
+            createdAt: createResponse.body.createdAt,
+            updatedAt: expect.any(String)
+          });
+          expect(res.body.updatedAt).not.toBe(createResponse.body.updatedAt);
+        });
+    });
+
+    it('should return 404 when updating non-existent project', () => {
+      const updateData = {
+        name: 'Updated Project',
+        description: 'Updated description'
+      };
+
+      return request(app.getHttpServer())
+        .put('/projects/non-existent-id')
+        .send(updateData)
+        .expect(404);
+    });
+  });
 });
