@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Body, Param, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, NotFoundException, HttpCode, HttpStatus } from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './entities/project.entity';
@@ -34,5 +34,14 @@ export class ProjectsController {
       throw new NotFoundException(`Project with id ${id} not found`);
     }
     return updatedProject;
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  remove(@Param('id') id: string): void {
+    const deleted = this.projectsService.remove(id);
+    if (!deleted) {
+      throw new NotFoundException(`Project with id ${id} not found`);
+    }
   }
 }

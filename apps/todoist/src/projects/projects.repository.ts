@@ -45,4 +45,14 @@ export class ProjectsRepository {
     this.projects[projectIndex] = updatedProject;
     return updatedProject;
   }
+
+  delete(id: string): boolean {
+    const projectIndex = this.projects.findIndex(project => project.id === id);
+    if (projectIndex === -1) {
+      return false;
+    }
+
+    this.projects.splice(projectIndex, 1);
+    return true;
+  }
 }

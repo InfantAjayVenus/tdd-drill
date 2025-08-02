@@ -158,4 +158,35 @@ describe('Projects (e2e)', () => {
         .expect(404);
     });
   });
+
+  describe('DELETE /projects/:id', () => {
+    it('should delete an existing project', async () => {
+      const newProject = {
+        name: 'Project to Delete',
+        description: 'Will be deleted'
+      };
+
+      // Create a project first
+      const createResponse = await request(app.getHttpServer())
+        .post('/projects')
+        .send(newProject)
+        .expect(201);
+
+      // Delete the project
+      await request(app.getHttpServer())
+        .delete(`/projects/${createResponse.body.id}`)
+        .expect(204);
+
+      // Verify it's gone
+      return request(app.getHttpServer())
+        .get(`/projects/${createResponse.body.id}`)
+        .expect(404);
+    });
+
+    it('should return 404 when deleting non-existent project', () => {
+      return request(app.getHttpServer())
+        .delete('/projects/non-existent-id')
+        .expect(404);
+    });
+  });
 });

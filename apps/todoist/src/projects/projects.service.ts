@@ -23,4 +23,8 @@ export class ProjectsService {
   update(id: string, updateProjectDto: UpdateProjectDto): Project | undefined {
     return this.projectsRepository.update(id, updateProjectDto);
   }
+
+  remove(id: string): boolean {
+    return this.projectsRepository.delete(id);
+  }
 }
